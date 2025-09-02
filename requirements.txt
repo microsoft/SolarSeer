@@ -1,0 +1,7 @@
+torch
+torchvision
+numpy
+timm
+icecream
+einops
+argparse
