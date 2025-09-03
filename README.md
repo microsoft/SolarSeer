@@ -1,10 +1,13 @@
+
 SolarSeer
----
+---------
+
 This repository contains the code used for the [paper] https://arxiv.org/abs/2508.03590 entitled "SolarSeer: Ultrafast and accurate 24-hour solar irradiance forecasts
-outperforming numerical weather prediction across the USA" 
+outperforming numerical weather prediction across the USA"
 
 Abstract
----
+--------
+
 Accurate 24-hour solar irradiance forecasting is essential for the safe and economic operation of solar
 photovoltaic systems. Traditional numerical weather prediction (NWP) models represent the state-of-the-art in
 forecasting performance but rely on computationally costly data assimilation and solving complicated partial
@@ -21,30 +24,30 @@ accuracy. SolarSeer’s ultrafast, accurate 24-hour solar irradiance forecasts p
 to sustainable, net-zero energy systems.
 
 Network
----
-SolarSeer is an end-to-end AI model trained with 16 MI200 GPUs for 24-hour-ahead solar irradiance forecasting across the USA. The network input is the past 6-hour 
-satellite observations and the future 24-hour clear-sky solar irradiance, where clear-sky solar irradiance is a function of latitude, 
-longtitude and time. The network output is the future 24-hour-ahead solar irradiance forecasts. SolarSeer can serve as a foundation 
+-------
+
+SolarSeer is an end-to-end AI model trained with 16 MI200 GPUs for 24-hour-ahead solar irradiance forecasting across the USA. The network input is the past 6-hour
+satellite observations and the future 24-hour clear-sky solar irradiance, where clear-sky solar irradiance is a function of latitude,
+longtitude and time. The network output is the future 24-hour-ahead solar irradiance forecasts. SolarSeer can serve as a foundation
 model for solar PV power generation forecasting. The network structure of SolarSeer is as follows:
 
 <img width="514" height="567" alt="image" src="https://github.com/user-attachments/assets/a8621cc2-e80b-4b3a-bbb2-a3eb03ca55c6" />
 
-For the network of SolarSeer, see 'network/SolarSeerNet.py'.
+For the network of SolarSeer, see `network/SolarSeerNet.py`.
 
 Inference
----
+---------
+
 To run the inference code, please follow the steps below:
 
-1. Download the pretrained network weights and put it in the "weight" folder.
-2. Download the network input, namely "satellite.npy" and "clearghi.npy". Put the two files in the "input" folder.
-   The input file is available at [BaiduDisk] (https://pan.baidu.com/s/1i91AQ01BJhuW1BYkpES19Q).
-   The pretrained weight file is available at [BaiduDisk] (https://pan.baidu.com/s/1QzEO_in6k9IekGcfp8qTCA).
-   For the password of these files, please contact mingliangbai@outlook.com. 
-4. Install packages using the command ```pip install -r requirement.txt ``` .
-5. Run the 'inference.py' file. The generated forecasts will be saved in 'results' folder.
+1. Get the pretrained network weights in the `weight` folder.
+2. Get the network input in input forder which contain `satellite.npy` and `clearghi.npy`.
+3. Install packages using the command ``pip install -r requirement.txt `` .
+4. Run the `inference.py` file. The generated forecasts will be saved in 'results' folder.
 
 Reference
----
+---------
+
 If you find it useful, cite it using:
 
 ```bibtex
@@ -57,3 +60,4 @@ If you find it useful, cite it using:
   journal={arXiv preprint arXiv:2508.03590},
   year={2025}
 }
+```
