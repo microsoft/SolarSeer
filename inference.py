@@ -3,9 +3,11 @@ import torch
 from network.SolarSeerNet import SolarSeerNet
 import time
 import os
+from pathlib import Path
 
 # network and hyperparameters
 start_time = time.perf_counter()
+base_dir = Path(__file__).resolve().parent
 multi_params = [{
 "img_size": [512, 1280],
 "embed_dim": 600,
@@ -35,23 +37,26 @@ model = SolarSeerNet(multi_params=multi_params,
                         autoregressive_steps=1,
                         target_variable_index=[0],
                         action="add")
-model = torch.load('./weight/SolarSeer.pt', weights_only=False)
+state_dict = torch.load(
+    base_dir / 'weight' / 'SolarSeer.pt',
+    map_location='cpu',
+    weights_only=True,
+)
+model.load_state_dict(state_dict, strict=True)
+device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+model = model.to(device)
 model.eval()
 
 # input data
-# random data
-satellite = torch.rand(1, 4, 6, 512, 1280).type(torch.float32)
-clearghi = torch.rand(24, 480, 1150).type(torch.float32)
 # sample data. The issue time is UTC 2023-10-11 06:00:00
-# the sample data is available at Baidu Disk. 
+# the sample data is available at Baidu Disk.
 date = 'UTC 2023-10-11 06:00:00'
-satellite = torch.from_numpy(np.load('input/satellite.npy')).float()
-clearghi = torch.from_numpy(np.load('input/clearghi.npy')).float()  
-satellite.to('cuda:0')
-clearghi.to('cuda:0')
+satellite = torch.from_numpy(np.load(base_dir / 'input' / 'satellite.npy')).float().to(device)
+clearghi = torch.from_numpy(np.load(base_dir / 'input' / 'clearghi.npy')).float().to(device)
 
 # output
-y = model(satellite, clearghi).cpu().detach().numpy()
+with torch.inference_mode():
+    y = model(satellite, clearghi).cpu().numpy()
 y[:, 0, :, :] = y[:, 0, :, :] * 1000 # surface solar irradiance, W/m^2
 y[:, 1, :, :] = y[:, 1, :, :] * 100 # total cloud cover, 0%~100%
 
@@ -60,5 +65,6 @@ end_time = time.perf_counter()
 print(end_time - start_time)
 
 # save results
-os.makedirs('results', exist_ok=True)
-np.save('results/irradiance_cloud.npy', y)   
+results_dir = base_dir / 'results'
+os.makedirs(results_dir, exist_ok=True)
+np.save(results_dir / 'irradiance_cloud.npy', y)
