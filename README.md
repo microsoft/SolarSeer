@@ -40,10 +40,10 @@ Inference
 
 To run the inference code, please follow the steps below:
 
-1. Get the pretrained network weights in the `weight` folder.
-2. Get the network input in input forder which contain `satellite.npy` and `clearghi.npy`.
-3. Install packages using the command ``pip install -r requirement.txt `` .
-4. Run the `inference.py` file. The generated forecasts will be saved in 'results' folder.
+1. Get the pretrained tensor-only state dictionary at `weight/SolarSeer.pt`.
+2. Get the network input in the `input` folder, which contains `satellite.npy` and `clearghi.npy`.
+3. Install packages using the command ``pip install -r requirements.txt``.
+4. Run the `inference.py` file. The checkpoint is loaded with PyTorch's restricted `weights_only=True` loader and strict key matching. The generated forecasts will be saved in the `results` folder.
 
 Reference
 ---------
